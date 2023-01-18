@@ -31,4 +31,5 @@ We will install (or update) kubectl, eksctl, awscli
 Login in to your [Cloud9 Environment](https://us-east-1.console.aws.amazon.com/cloud9control/) 
 
 ## References
+[Getting started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)  
 
