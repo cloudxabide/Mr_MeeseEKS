@@ -33,6 +33,13 @@ codedemo:~/environment $ aws --version
 aws-cli/2.9.15 Python/3.9.11 Linux/4.14.301-224.520.amzn2.x86_64 exe/x86_64.amzn.2 prompt/off
 ```
 
+## Install eksctl
+```
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+
+sudo mv -v /tmp/eksctl /usr/local/bin
+```
+
 ## Install GNU utilities
 
 Install utilities and create alias to run yq (yq portion is optional)
