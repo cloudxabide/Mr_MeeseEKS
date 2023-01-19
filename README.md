@@ -55,11 +55,10 @@ curl -o amazon-eks-vpc-3-private-subnets.yaml https://raw.githubusercontent.com/
 sdiff amazon-eks-vpc-private-subnets.yaml amazon-eks-vpc-3-private-subnets.yaml
 ```
 
-# NOTE THIS IS NOT TESTED YET - I CREATED FROM CONSOLE TO TEST
 ```
 aws cloudformation create-stack --stack-name "${STACK_NAME}" \
   --template-body file://amazon-eks-vpc-3-private-subnets.yaml \
- --region ${MY_REGION} 
+  --region ${MY_REGION} 
 ```
 
 ```
@@ -85,6 +84,7 @@ aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `
 ```
 
 ## Create a Managed Node Group
+[Create a Managed Node Group](./Create_Managed_NodeGroup.md)
 
 
 ## Create a Managed Node Group with SPOT (Future)
