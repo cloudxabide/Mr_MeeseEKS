@@ -1,5 +1,7 @@
 #!/bin/bash
-#
+# Purpose:  Simple Script to "spin-up" or "wind-down" the number of replicas 
+#           You should be viewing the app "front page" and run this script, then watch
+#              the visualization
 
 usage() { echo "$0 {up|down}"; exit 9; }
 if  [ $# -ne 1 ]; then usage; fi 
