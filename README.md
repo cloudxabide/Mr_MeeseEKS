@@ -8,7 +8,7 @@ I connect with very few "pop culture" things these days.  Mostly because I am ol
 
 [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) handles a *SIGNIFICANT* amount of "undiferentiated heavy lifting" that is involved with Kubernetes.  
 
-Examples of Amazon EKS advantages:  
+Amazon EKS advantages - a few that I find compelling:  
 * Installation of Kubernetes
 * Operation and Maintenance of the Kubernetes cluster
 * Management of the Kubernetes control-plane
@@ -88,6 +88,15 @@ aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `
 
 
 ## Create a Managed Node Group with SPOT (Future)
+
+## Deploy a Simple App
+This app is really cool.  It provides a "visual representation" of where the 3-tiers of pods are running.
+
+[Deploy Demo App - 3-tier](Deploy_Demo_App.md)
+
+## Deploy Java App using Code Pipeline
+This one is a bit more complicated/involved.  It will deploy all the resources necessary to deploy a simple Java WebApp using AWS Code Developer Tools
+
 
 
 ## References
