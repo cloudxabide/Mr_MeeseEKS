@@ -86,7 +86,6 @@ aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `
 ## Create a Managed Node Group
 [Create a Managed Node Group](./Create_Managed_NodeGroup.md)
 
-
 ## Create a Managed Node Group with SPOT (Future)
 
 ## Deploy a Simple App
