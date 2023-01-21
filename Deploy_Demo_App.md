@@ -35,7 +35,7 @@ kubectl apply -f kubernetes/deployment.yaml
 kubectl apply -f kubernetes/service.yaml
 kubectl get deployment ecsdemo-frontend
 
-curl -l replica_control.sh https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Scripts/replica_control.sh
+curl -o replica_control.sh https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Scripts/replica_control.sh
 chmod +x replica_control.sh
 ./replica_control.sh up
 ```
