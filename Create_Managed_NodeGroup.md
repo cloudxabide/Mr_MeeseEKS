@@ -4,7 +4,7 @@
 ```
 MY_REGION=us-east-1
 MY_CLUSTER=poceks
-aws ec2 create-key-pair --region $MY_REGION --key-name poceks --query 'KeyMaterial' --output text > MrMeeSeEKS.pem
+aws ec2 create-key-pair --region $MY_REGION --key-name poceks --query 'KeyMaterial' --output text > $MY_CLUSTER.pem
  aws ec2 describe-key-pairs --key-name poceks
 
 ```
