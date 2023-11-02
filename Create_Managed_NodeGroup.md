@@ -3,14 +3,15 @@
 
 ```
 MY_REGION=us-east-1
-aws ec2 create-key-pair --region $MY_REGION --key-name mrmeeseeks --query 'KeyMaterial' --output text > MrMeeSeEKS.pem
- aws ec2 describe-key-pairs --key-name mrmeeseeks
+MY_CLUSTER=poceks
+aws ec2 create-key-pair --region $MY_REGION --key-name poceks --query 'KeyMaterial' --output text > MrMeeSeEKS.pem
+ aws ec2 describe-key-pairs --key-name poceks
 
 ```
 
 ```
 eksctl create nodegroup \
-  --cluster mrmeeseeks \
+  --cluster poceks \
   --region $MY_REGION \
   --name my-mng-al2 \
   --node-ami-family AmazonLinux2 \
@@ -19,7 +20,7 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key mrmeeseeks \
+  --ssh-public-key poceks \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \
@@ -30,7 +31,7 @@ eksctl create nodegroup \
 
 ```
 eksctl create nodegroup \
-  --cluster mrmeeseeks \
+  --cluster poceks \
   --region $MY_REGION \
   --name my-mng-bottlerocket \
   --node-ami-family Bottlerocket \
@@ -39,7 +40,7 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key mrmeeseeks \
+  --ssh-public-key poceks \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \
