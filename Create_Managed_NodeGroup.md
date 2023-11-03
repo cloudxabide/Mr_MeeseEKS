@@ -3,7 +3,7 @@
 
 ```
 MY_REGION=us-east-1
-MY_CLUSTER=${MY_CLUSTER}
+[ -z $MY_CLUSTER] && MY_CLUSTER=codedemo
 aws ec2 create-key-pair --region $MY_REGION --key-name ${MY_CLUSTER} --query 'KeyMaterial' --output text > $MY_CLUSTER.pem
  aws ec2 describe-key-pairs --key-name ${MY_CLUSTER}
 
