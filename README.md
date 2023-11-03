@@ -38,7 +38,7 @@ Run through the [Install Tools](Install_Tools.md) doc
 https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
 
 ```
-MY_CLUSTER="mrmeeseeks"
+MY_CLUSTER="codedemo"
 MY_REGION="us-east-1"
 MY_VERSION="1.24"
 STACK_NAME="${MY_CLUSTER}"
@@ -62,13 +62,13 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
 ```
 
 ```
-aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `mrmeeseeks`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
+aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `codedemo`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
 ```
 
 ### OK.. now on to the cluster
 ```
-# Get the VPC_ID for the mrmeseeks VPC we created
-MY_VPC_ID=$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=mrmeeseeks-VPC" --query "Vpcs[].VpcId" --output=text)
+# Get the VPC_ID for the codedemo VPC we created
+MY_VPC_ID=$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=codedemo-VPC" --query "Vpcs[].VpcId" --output=text)
 
 # Gather the SubnetId for the private subnets
 SUBNETS=$(aws ec2 describe-subnets --region $MY_REGION  --filters "Name=vpc-id,Values=${MY_VPC_ID}" --query 'Subnets[?MapPublicIpOnLaunch==`false`].SubnetId' --output=text)
@@ -80,7 +80,7 @@ eksctl create cluster --name ${MY_CLUSTER} --region ${MY_REGION} --version ${MY_
 ```
 
 ```
-aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `eksctl-mrmeeseeks-cluster`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
+aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `eksctl-codedemo-cluster`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
 ```
 
 ## Create a Managed Node Group

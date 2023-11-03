@@ -13,11 +13,11 @@ S3 Bucket
 #################################
 # Variables for this Demo
 ```
-APPNAME="mrmeeseeks"  
+APPNAME="codedemo"  
 ENVIRONMENT="test"
 MYDATE=$(date +%F)
 PROJECT="${APPNAME}-${MYDATE}"
-REGION="us-east-1"
+REGION="us-west-2"
 
 echo "Using Project: ${PROJECT}"
 echo "Deployed in Region: $REGION"
@@ -81,11 +81,11 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
   --parameters file://${STACK_PARAMETERS} \
   --region $REGION
 
-# --query 'StackSummaries[?starts_with(StackName, `mrmeeseeks`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
+# --query 'StackSummaries[?starts_with(StackName, `codedemo`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
 aws ecr describe-repositories --query
 #  Need to figure out how to pass a var in to the following command/query - $APPNAME, for example
-ECR_URL=$(aws ecr describe-repositories  --query 'repositories[?contains(repositoryUri,`mrmeeseeks`)].{repositoryUri:repositoryUri}' --output text --no-cli-pager )
-ECR_URL_BASE=$(echo $ECR_URL  | grep mrmeeseeks | cut -f1 -d\/  )
+ECR_URL=$(aws ecr describe-repositories  --query 'repositories[?contains(repositoryUri,`codedemo`)].{repositoryUri:repositoryUri}' --output text --no-cli-pager )
+ECR_URL_BASE=$(echo $ECR_URL  | grep codedemo | cut -f1 -d\/  )
 
 aws codecommit list-repositories --query "repositories[].repositoryName" --output text
 ```
@@ -104,7 +104,7 @@ STACK_PARAMETERS_TMP=${STACK_NAME}.cfn.tmp
 
 # Need to get this to query for the cluster name 
 #EKS_CLUSTER_NAME=$(aws eks list-clusters --query "clusters" --output text)
-EKS_CLUSTER_NAME=mrmeeseeks
+EKS_CLUSTER_NAME=codedemo
 cat << EOF > ${STACK_PARAMETERS_TMP}
 EKSCodeBuildAppName	aws-proserve-java-greeting
 EcrDockerRepository	${PROJECT}

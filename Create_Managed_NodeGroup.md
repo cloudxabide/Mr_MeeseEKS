@@ -3,15 +3,15 @@
 
 ```
 MY_REGION=us-east-1
-MY_CLUSTER=poceks
-aws ec2 create-key-pair --region $MY_REGION --key-name poceks --query 'KeyMaterial' --output text > $MY_CLUSTER.pem
- aws ec2 describe-key-pairs --key-name poceks
+MY_CLUSTER=${MY_CLUSTER}
+aws ec2 create-key-pair --region $MY_REGION --key-name ${MY_CLUSTER} --query 'KeyMaterial' --output text > $MY_CLUSTER.pem
+ aws ec2 describe-key-pairs --key-name ${MY_CLUSTER}
 
 ```
 
 ```
 eksctl create nodegroup \
-  --cluster poceks \
+  --cluster ${MY_CLUSTER} \
   --region $MY_REGION \
   --name my-mng-al2 \
   --node-ami-family AmazonLinux2 \
@@ -20,7 +20,7 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key poceks \
+  --ssh-public-key ${MY_CLUSTER} \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \
@@ -31,7 +31,7 @@ eksctl create nodegroup \
 
 ```
 eksctl create nodegroup \
-  --cluster poceks \
+  --cluster ${MY_CLUSTER} \
   --region $MY_REGION \
   --name my-mng-bottlerocket \
   --node-ami-family Bottlerocket \
@@ -40,7 +40,7 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key poceks \
+  --ssh-public-key ${MY_CLUSTER} \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \
