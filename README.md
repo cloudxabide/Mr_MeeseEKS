@@ -88,6 +88,9 @@ aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `
 
 ## Create a Managed Node Group with SPOT (Future)
 
+## Enable Metrics
+[Enable Metrics](./Enable_Metrics.md)
+
 ## Deploy a Simple App
 This app is really cool.  It provides a "visual representation" of where the 3-tiers of pods are running.
 
