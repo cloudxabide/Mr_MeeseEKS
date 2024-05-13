@@ -1,0 +1,7 @@
+VpcBlock              10.2.0.0/16
+PublicSubnet01Block    10.2.0.0/19
+PublicSubnet02Block   10.2.32.0/19
+PublicSubnet03Block   10.2.64.0/19
+PrivateSubnet01Block  10.2.96.0/19
+PrivateSubnet02Block  10.2.128.0/19
+PrivateSubnet03Block  10.2.160.0/19
