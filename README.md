@@ -50,10 +50,23 @@ Changes I made:
 * Added *-03 subnets (pub and priv)
 * Modified the CIDR from a /18 to a /19 (16,384 to 8,192) for each subnet
 
+### Standard VPC
 ```
 curl -o amazon-eks-vpc-private-subnets.yaml https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2020-10-29/amazon-eks-vpc-private-subnets.yaml
 curl -o amazon-eks-vpc-3-private-subnets.yaml https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Files/amazon-eks-vpc-3-private-subnets.yaml
 sdiff amazon-eks-vpc-private-subnets.yaml amazon-eks-vpc-3-private-subnets.yaml
+
+### VPC to accommodate Transit Gateway (TGW)
+```
+curl -o amazon-eks-vpc-private-subnets.yaml https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2020-10-29/amazon-eks-vpc-private-subnets.yaml
+curl -o amazon-vpc-3-public-private-tgw-subnets.yaml https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Files/amazon-vpc-3-public-private-tgw-subnets.yaml
+sdiff amazon-eks-vpc-private-subnets.yaml amazon-vpc-3-public-private-tgw-subnets.yaml
+```
+
+Tip:  If you want to swap CIDR
+```
+sed -i -e 's/10.1./172.16./g' amazon-eks-vpc-3-private-subnets.yaml
+sed -i -e 's/10.1./172.16./g' amazon-vpc-3-public-private-tgw-subnets.yaml
 ```
 
 ```
