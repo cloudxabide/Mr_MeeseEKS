@@ -23,7 +23,6 @@ I am going to "try something" with this repo:  for the more involved and "auxila
 
 While I use [AWS Cloud9](https://aws.amazon.com/cloud9/) that is not a necessity.  (I do recommend you check it out though, if you've not used it).
 
-
 ## Configure Cloud9 Environment - Install tools and configure account
 We will install (or update) kubectl, eksctl, awscli
 
@@ -42,6 +41,8 @@ MY_CLUSTER="demo"
 MY_REGION="us-east-1"
 MY_K8S_VERSION="1.31"
 STACK_NAME="${MY_CLUSTER}"
+FILE=amazon-eks-vpc-3-private-subnets.yaml # VPC with 3 pub, 3 priv
+FILE=amazon-vpc-3-public-private-tgw-subnets.yaml # VPC with 3 pub, 3 priv, and 3 TGW subnets
 ```
 
 NOTE:  I am directing you to pull a file from *my* Git Repo... So, I urge caution, and then advise you to compare to the AWS example. (coming from a guy who names his repo after Rick and Morty characters ;-)  
@@ -53,25 +54,17 @@ Changes I made:
 ### Standard VPC
 ```
 curl -o amazon-eks-vpc-private-subnets.yaml https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2020-10-29/amazon-eks-vpc-private-subnets.yaml
-curl -o amazon-eks-vpc-3-private-subnets.yaml https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Files/amazon-eks-vpc-3-private-subnets.yaml
-sdiff amazon-eks-vpc-private-subnets.yaml amazon-eks-vpc-3-private-subnets.yaml
-
-### VPC to accommodate Transit Gateway (TGW)
-```
-curl -o amazon-eks-vpc-private-subnets.yaml https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2020-10-29/amazon-eks-vpc-private-subnets.yaml
-curl -o amazon-vpc-3-public-private-tgw-subnets.yaml https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Files/amazon-vpc-3-public-private-tgw-subnets.yaml
-sdiff amazon-eks-vpc-private-subnets.yaml amazon-vpc-3-public-private-tgw-subnets.yaml
-```
+curl -o $FILE https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Files/${FILE}
+sdiff amazon-eks-vpc-private-subnets.yaml ${FILE}
 
 Tip:  If you want to swap CIDR
 ```
-sed -i -e 's/10.1./172.16./g' amazon-eks-vpc-3-private-subnets.yaml
-sed -i -e 's/10.1./172.16./g' amazon-vpc-3-public-private-tgw-subnets.yaml
+sed -i -e 's/10.1./172.16./g' ${FILE}
 ```
 
 ```
 aws cloudformation create-stack --stack-name "${STACK_NAME}" \
-  --template-body file://amazon-eks-vpc-3-private-subnets.yaml \
+  --template-body file://${FILE} \
   --region ${MY_REGION} 
 ```
 
