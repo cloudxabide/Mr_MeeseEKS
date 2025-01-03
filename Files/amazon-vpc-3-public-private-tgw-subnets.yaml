@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Amazon EKS Sample VPC - Private and Public subnets'
+Description: 'Amazon EKS Sample VPC - Private,Public, and TGW subnets'
 
 Metadata:
   cfn-lint: { config: { ignore_checks: [W3011,E2003,E3006] } }
@@ -8,7 +8,7 @@ Metadata:
     ParameterGroups:
       -
         Label:
-          default: "Worker Network Configuration"
+          default: "EKS Worker Node Network Configuration"
         Parameters:
           - VpcCidrBlock 
           - PublicSubnet01CidrBlock
