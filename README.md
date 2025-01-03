@@ -38,13 +38,14 @@ Run through the [Install Tools](Install_Tools.md) doc
 https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
 
 ```
-MY_CLUSTER="codedemo"
+MY_CLUSTER="demo"
 MY_REGION="us-east-1"
-MY_VERSION="1.24"
+MY_K8S_VERSION="1.31"
 STACK_NAME="${MY_CLUSTER}"
 ```
 
-NOTE:  I am directing you to pull a file from *my* Git Repo... So, I urge caution, and then advise you to compare to the AWS example. (coming from a guy who names his repo after Rick and Morty characters ;-)
+NOTE:  I am directing you to pull a file from *my* Git Repo... So, I urge caution, and then advise you to compare to the AWS example. (coming from a guy who names his repo after Rick and Morty characters ;-)  
+
 Changes I made:
 * Added *-03 subnets (pub and priv)
 * Modified the CIDR from a /18 to a /19 (16,384 to 8,192) for each subnet
@@ -76,7 +77,7 @@ SUBNETS=$(aws ec2 describe-subnets --region $MY_REGION  --filters "Name=vpc-id,V
 
 The following command is not async - i.e. it will keep providing output until it is complete.  Enjoy!
 ```
-eksctl create cluster --name ${MY_CLUSTER} --region ${MY_REGION} --version ${MY_VERSION} --vpc-private-subnets $(echo $SUBNETS | sed 's/ /,/g') --without-nodegroup
+eksctl create cluster --name ${MY_CLUSTER} --region ${MY_REGION} --version ${MY_K8S_VERSION} --vpc-private-subnets $(echo $SUBNETS | sed 's/ /,/g') --without-nodegroup
 ```
 
 ```
