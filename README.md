@@ -56,6 +56,7 @@ Changes I made:
 curl -o amazon-eks-vpc-private-subnets.yaml https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2020-10-29/amazon-eks-vpc-private-subnets.yaml
 curl -o $FILE https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Files/${FILE}
 sdiff amazon-eks-vpc-private-subnets.yaml ${FILE}
+```
 
 Tip:  If you want to swap CIDR
 ```
