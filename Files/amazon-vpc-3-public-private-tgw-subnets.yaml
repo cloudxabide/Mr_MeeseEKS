@@ -162,7 +162,7 @@ Resources:
       - Key: Network
         Value: Tgw Route Table03
 
-  public-route:
+  PublicRoute:
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::Route
     Properties:
@@ -170,7 +170,7 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
-  private-route01:
+  PrivateRoute01:
     DependsOn:
     - VPCGatewayAttachment
     - NatGw01
@@ -180,7 +180,7 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref NatGw01
 
-  private-route02:
+  PrivateRoute02:
     DependsOn:
     - VPCGatewayAttachment
     - NatGw02
@@ -190,7 +190,7 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref NatGw02
 
-  private-route03:
+  PrivateRoute03:
     DependsOn:
     - VPCGatewayAttachment
     - NatGw03
@@ -200,7 +200,7 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref NatGw03
 
-  tgw-route01:
+  TgwRoute01:
     DependsOn:
     - VPCGatewayAttachment
     - NatGw01
@@ -210,7 +210,7 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref NatGw01
 
-  tgw-route02:
+  TgwRoute02:
     DependsOn:
     - VPCGatewayAttachment
     - NatGw02
@@ -220,7 +220,7 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref NatGw02
 
-  tgw-route03:
+  TgwRoute03:
     DependsOn:
     - VPCGatewayAttachment
     - NatGw03
@@ -466,55 +466,55 @@ Resources:
       - Key: Name
         Value: !Sub "${AWS::StackName}-TgwSubnet03"
 
-  PublicSubnet01-route-table-association:
+  PublicSubnet01RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PublicSubnet01
       RouteTableId: !Ref PublicRouteTable
 
-  PublicSubnet02-route-table-association:
+  PublicSubnet02RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PublicSubnet02
       RouteTableId: !Ref PublicRouteTable
 
-  PublicSubnet03-route-table-association:
+  PublicSubnet03RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PublicSubnet03
       RouteTableId: !Ref PublicRouteTable
 
-  PrivateSubnet01-route-table-association:
+  PrivateSubnet01RouteTableAssocation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnet01
       RouteTableId: !Ref PrivateRouteTable01
 
-  PrivateSubnet02-route-table-association:
+  PrivateSubnet02RouteTableAssocation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnet02
       RouteTableId: !Ref PrivateRouteTable02
 
-  PrivateSubnet03-route-table-association:
+  PrivateSubnet03RouteTableAssocation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnet03
       RouteTableId: !Ref PrivateRouteTable03
 
-  TgwSubnet01-route-table-association:
+  TgwSubnet01RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref TgwSubnet01
       RouteTableId: !Ref TgwRouteTable01
 
-  TgwSubnet02-route-table-association:
+  TgwSubnet02RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref TgwSubnet02
       RouteTableId: !Ref TgwRouteTable02
 
-  TgwSubnet03-route-table-association:
+  TgwSubnet03RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref TgwSubnet03
