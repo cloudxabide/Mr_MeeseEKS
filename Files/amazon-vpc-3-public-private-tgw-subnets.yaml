@@ -10,73 +10,73 @@ Metadata:
         Label:
           default: "Worker Network Configuration"
         Parameters:
-          - vpc-cidr-block 
-          - public-subnet01-cidr-block
-          - public-subnet02-cidr-block
-          - public-subnet03-cidr-block
-          - private-subnet01-cidr-block
-          - private-subnet02-cidr-block
-          - private-subnet03-cidr-block
-          - tgw-subnet01-cidr-block
-          - tgw-subnet02-cidr-block
-          - tgw-subnet03-cidr-block
+          - VpcCidrBlock 
+          - PublicSubnet01CidrBlock
+          - PublicSubnet02CidrBlock
+          - PublicSubnet03CidrBlock
+          - PrivateSubnet01CidrBlock
+          - PrivateSubnet02CidrBlock
+          - PrivateSubnet03CidrBlock
+          - TgwSubnet01CidrBlock
+          - TgwSubnet02CidrBlock
+          - TgwSubnet03CidrBlock
 
 Parameters:
-  vpc-cidr-block:
+  VpcCidrBlock:
     Type: String
-    Default: 10.1.0.0/16
+    Default: 172.16.0.0/16
     Description: The CIDR range for the VPC. This should be a valid private (RFC 1918) CIDR range.
 
-  public-subnet01-cidr-block:
+  PublicSubnet01CidrBlock:
     Type: String
-    Default: 10.1.0.0/19
+    Default: 172.16.0.0/19
     Description: CidrBlock for public subnet 01 within the VPC
 
-  public-subnet02-cidr-block:
+  PublicSubnet02CidrBlock:
     Type: String
-    Default: 10.1.32.0/19
+    Default: 172.16.32.0/19
     Description: CidrBlock for public subnet 02 within the VPC
 
-  public-subnet03-cidr-block:
+  PublicSubnet03CidrBlock:
     Type: String
-    Default: 10.1.64.0/19
+    Default: 172.16.64.0/19
     Description: CidrBlock for public subnet 03 within the VPC
 
-  private-subnet01-cidr-block:
+  PrivateSubnet01CidrBlock:
     Type: String
-    Default: 10.1.96.0/19
+    Default: 172.16.96.0/19
     Description: CidrBlock for private subnet 01 within the VPC
 
-  private-subnet02-cidr-block:
+  PrivateSubnet02CidrBlock:
     Type: String
-    Default: 10.1.128.0/19
+    Default: 172.16.128.0/19
     Description: CidrBlock for private subnet 02 within the VPC
 
-  private-subnet03-cidr-block:
+  PrivateSubnet03CidrBlock:
     Type: String
-    Default: 10.1.160.0/19
+    Default: 172.16.160.0/19
     Description: CidrBlock for private subnet 03 within the VPC
 
-  tgw-subnet01-cidr-block:
+  TgwSubnet01CidrBlock:
     Type: String
-    Default: 10.1.192.0/28
+    Default: 172.16.224.0/28
     Description: CidrBlock for tgw subnet 01 within the VPC
 
-  tgw-subnet02-cidr-block:
+  TgwSubnet02CidrBlock:
     Type: String
-    Default: 10.1.192.16/28
+    Default: 172.16.224.16/28
     Description: CidrBlock for tgw subnet 02 within the VPC
 
-  tgw-subnet03-cidr-block:
+  TgwSubnet03CidrBlock:
     Type: String
-    Default: 10.1.192.32/28
+    Default: 172.16.224.32/28
     Description: CidrBlock for tgw subnet 03 within the VPC
 
 Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock:  !Ref vpc-cidr-block 
+      CidrBlock:  !Ref VpcCidrBlock 
       EnableDnsSupport: true
       EnableDnsHostnames: true
       Tags:
@@ -92,7 +92,7 @@ Resources:
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref VPC
 
-  public-route-table:
+  PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
@@ -102,7 +102,7 @@ Resources:
       - Key: Network
         Value: Public
 
-  private-route-table01:
+  PrivateRouteTable01:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
@@ -112,7 +112,7 @@ Resources:
       - Key: Network
         Value: Private01
 
-  private-route-table02:
+  PrivateRouteTable02:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
@@ -122,7 +122,7 @@ Resources:
       - Key: Network
         Value: Private02
 
-  private-route-table03:
+  PrivateRouteTable03:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
@@ -132,7 +132,7 @@ Resources:
       - Key: Network
         Value: Private03
 
-  tgw-route-table01:
+  TgwRouteTable01:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
@@ -142,7 +142,7 @@ Resources:
       - Key: Network
         Value: Tgw Route Table01
 
-  tgw-route-table02:
+  TgwRouteTable02:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
@@ -152,7 +152,7 @@ Resources:
       - Key: Network
         Value: Tgw Route Table02
 
-  tgw-route-table03:
+  TgwRouteTable03:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
@@ -166,130 +166,130 @@ Resources:
     DependsOn: VPCGatewayAttachment
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref public-route-table
+      RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
   private-route01:
     DependsOn:
     - VPCGatewayAttachment
-    - nat-gateway01
+    - NatGw01
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref private-route-table01
+      RouteTableId: !Ref PrivateRouteTable01
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref nat-gateway01
+      NatGatewayId: !Ref NatGw01
 
   private-route02:
     DependsOn:
     - VPCGatewayAttachment
-    - nat-gateway02
+    - NatGw02
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref private-route-table02
+      RouteTableId: !Ref PrivateRouteTable02
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref nat-gateway02
+      NatGatewayId: !Ref NatGw02
 
   private-route03:
     DependsOn:
     - VPCGatewayAttachment
-    - nat-gateway03
+    - NatGw03
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref private-route-table03
+      RouteTableId: !Ref PrivateRouteTable03
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref nat-gateway03
+      NatGatewayId: !Ref NatGw03
 
   tgw-route01:
     DependsOn:
     - VPCGatewayAttachment
-    - nat-gateway01
+    - NatGw01
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref tgw-route-table01
+      RouteTableId: !Ref TgwRouteTable01
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref nat-gateway01
+      NatGatewayId: !Ref NatGw01
 
   tgw-route02:
     DependsOn:
     - VPCGatewayAttachment
-    - nat-gateway02
+    - NatGw02
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref tgw-route-table02
+      RouteTableId: !Ref TgwRouteTable02
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref nat-gateway02
+      NatGatewayId: !Ref NatGw02
 
   tgw-route03:
     DependsOn:
     - VPCGatewayAttachment
-    - nat-gateway03
+    - NatGw03
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref tgw-route-table03
+      RouteTableId: !Ref TgwRouteTable03
       DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId: !Ref nat-gateway03
-  nat-gateway01:
+      NatGatewayId: !Ref NatGw03
+  NatGw01:
     DependsOn:
-    - nat-gatewayEIP1
-    - public-subnet01
+    - NatGwEIP1
+    - PublicSubnet01
     - VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !GetAtt 'nat-gatewayEIP1.AllocationId'
-      SubnetId: !Ref public-subnet01
+      AllocationId: !GetAtt 'NatGwEIP1.AllocationId'
+      SubnetId: !Ref PublicSubnet01
       Tags:
       - Key: Name
-        Value: !Sub '${AWS::StackName}-nat-gatewayAZ1'
+        Value: !Sub '${AWS::StackName}-NatGwAZ1'
 
-  nat-gateway02:
+  NatGw02:
     DependsOn:
-    - nat-gatewayEIP2
-    - public-subnet02
+    - NatGwEIP2
+    - PublicSubnet02
     - VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !GetAtt 'nat-gatewayEIP2.AllocationId'
-      SubnetId: !Ref public-subnet02
+      AllocationId: !GetAtt 'NatGwEIP2.AllocationId'
+      SubnetId: !Ref PublicSubnet02
       Tags:
       - Key: Name
-        Value: !Sub '${AWS::StackName}-nat-gatewayAZ2'
+        Value: !Sub '${AWS::StackName}-NatGwAZ2'
 
-  nat-gateway03:
+  NatGw03:
     DependsOn:
-    - nat-gatewayEIP3
-    - public-subnet03
+    - NatGwEIP3
+    - PublicSubnet03
     - VPCGatewayAttachment
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !GetAtt 'nat-gatewayEIP3.AllocationId'
-      SubnetId: !Ref public-subnet03
+      AllocationId: !GetAtt 'NatGwEIP3.AllocationId'
+      SubnetId: !Ref PublicSubnet03
       Tags:
       - Key: Name
-        Value: !Sub '${AWS::StackName}-nat-gatewayAZ3'
+        Value: !Sub '${AWS::StackName}-NatGwAZ3'
 
-  nat-gatewayEIP1:
+  NatGwEIP1:
     DependsOn:
     - VPCGatewayAttachment
     Type: 'AWS::EC2::EIP'
     Properties:
       Domain: vpc
 
-  nat-gatewayEIP2:
+  NatGwEIP2:
     DependsOn:
     - VPCGatewayAttachment
     Type: 'AWS::EC2::EIP'
     Properties:
       Domain: vpc
 
-  nat-gatewayEIP3:
+  NatGwEIP3:
     DependsOn:
     - VPCGatewayAttachment
     Type: 'AWS::EC2::EIP'
     Properties:
       Domain: vpc
 
-  public-subnet01:
+  PublicSubnet01:
     Type: AWS::EC2::Subnet
     Metadata:
       Comment: Subnet 01
@@ -301,16 +301,16 @@ Resources:
         - Fn::GetAZs:
             Ref: AWS::Region
       CidrBlock:
-        Ref: public-subnet01-cidr-block
+        Ref: PublicSubnet01CidrBlock
       VpcId:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-public-subnet01"
+        Value: !Sub "${AWS::StackName}-PublicSubnet01"
       - Key: kubernetes.io/role/elb
         Value: 1
 
-  public-subnet02:
+  PublicSubnet02:
     Type: AWS::EC2::Subnet
     Metadata:
       Comment: Subnet 02
@@ -322,16 +322,16 @@ Resources:
         - Fn::GetAZs:
             Ref: AWS::Region
       CidrBlock:
-        Ref: public-subnet02-cidr-block
+        Ref: PublicSubnet02CidrBlock
       VpcId:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-public-subnet02"
+        Value: !Sub "${AWS::StackName}-PublicSubnet02"
       - Key: kubernetes.io/role/elb
         Value: 1
 
-  public-subnet03:
+  PublicSubnet03:
     Type: AWS::EC2::Subnet
     Metadata:
       Comment: Subnet 03
@@ -343,16 +343,16 @@ Resources:
         - Fn::GetAZs:
             Ref: AWS::Region
       CidrBlock:
-        Ref: public-subnet03-cidr-block
+        Ref: PublicSubnet03CidrBlock
       VpcId:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-public-subnet03"
+        Value: !Sub "${AWS::StackName}-PublicSubnet03"
       - Key: kubernetes.io/role/elb
         Value: 1
 
-  private-subnet01:
+  PrivateSubnet01:
     Type: AWS::EC2::Subnet
     Metadata:
       Comment: Private Subnet 01
@@ -363,16 +363,16 @@ Resources:
         - Fn::GetAZs:
             Ref: AWS::Region
       CidrBlock:
-        Ref: private-subnet01-cidr-block
+        Ref: PrivateSubnet01CidrBlock
       VpcId:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-private-subnet01"
+        Value: !Sub "${AWS::StackName}-PrivateSubnet01"
       - Key: kubernetes.io/role/internal-elb
         Value: 1
 
-  private-subnet02:
+  PrivateSubnet02:
     Type: AWS::EC2::Subnet
     Metadata:
       Comment: Private Subnet 02
@@ -383,16 +383,16 @@ Resources:
         - Fn::GetAZs:
             Ref: AWS::Region
       CidrBlock:
-        Ref: private-subnet02-cidr-block
+        Ref: PrivateSubnet02CidrBlock
       VpcId:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-private-subnet02"
+        Value: !Sub "${AWS::StackName}-PrivateSubnet02"
       - Key: kubernetes.io/role/internal-elb
         Value: 1
 
-  private-subnet03:
+  PrivateSubnet03:
     Type: AWS::EC2::Subnet
     Metadata:
       Comment: Private Subnet 03
@@ -403,16 +403,16 @@ Resources:
         - Fn::GetAZs:
             Ref: AWS::Region
       CidrBlock:
-        Ref: private-subnet03-cidr-block
+        Ref: PrivateSubnet03CidrBlock
       VpcId:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-private-subnet03"
+        Value: !Sub "${AWS::StackName}-PrivateSubnet03"
       - Key: kubernetes.io/role/internal-elb
         Value: 1
 
-  tgw-subnet01:
+  TgwSubnet01:
     Type: AWS::EC2::Subnet
     Metadata:
       Comment: Tgw Subnet 01
@@ -423,14 +423,14 @@ Resources:
         - Fn::GetAZs:
             Ref: AWS::Region
       CidrBlock:
-        Ref: tgw-subnet01-cidr-block
+        Ref: TgwSubnet01CidrBlock
       VpcId:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-tgw-subnet01"
+        Value: !Sub "${AWS::StackName}-TgwSubnet01"
 
-  tgw-subnet02:
+  TgwSubnet02:
     Type: AWS::EC2::Subnet
     Metadata:
       Comment: Tgw Subnet 02
@@ -441,14 +441,14 @@ Resources:
         - Fn::GetAZs:
             Ref: AWS::Region
       CidrBlock:
-        Ref: tgw-subnet02-cidr-block
+        Ref: TgwSubnet02CidrBlock
       VpcId:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-tgw-subnet02"
+        Value: !Sub "${AWS::StackName}-TgwSubnet02"
 
-  tgw-subnet03:
+  TgwSubnet03:
     Type: AWS::EC2::Subnet
     Metadata:
       Comment: Tgw Subnet 03
@@ -459,66 +459,66 @@ Resources:
         - Fn::GetAZs:
             Ref: AWS::Region
       CidrBlock:
-        Ref: tgw-subnet03-cidr-block
+        Ref: TgwSubnet03CidrBlock
       VpcId:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-tgw-subnet03"
+        Value: !Sub "${AWS::StackName}-TgwSubnet03"
 
-  public-subnet01-route-table-association:
+  PublicSubnet01-route-table-association:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref public-subnet01
-      RouteTableId: !Ref public-route-table
+      SubnetId: !Ref PublicSubnet01
+      RouteTableId: !Ref PublicRouteTable
 
-  public-subnet02-route-table-association:
+  PublicSubnet02-route-table-association:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref public-subnet02
-      RouteTableId: !Ref public-route-table
+      SubnetId: !Ref PublicSubnet02
+      RouteTableId: !Ref PublicRouteTable
 
-  public-subnet03-route-table-association:
+  PublicSubnet03-route-table-association:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref public-subnet03
-      RouteTableId: !Ref public-route-table
+      SubnetId: !Ref PublicSubnet03
+      RouteTableId: !Ref PublicRouteTable
 
-  private-subnet01-route-table-association:
+  PrivateSubnet01-route-table-association:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref private-subnet01
-      RouteTableId: !Ref private-route-table01
+      SubnetId: !Ref PrivateSubnet01
+      RouteTableId: !Ref PrivateRouteTable01
 
-  private-subnet02-route-table-association:
+  PrivateSubnet02-route-table-association:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref private-subnet02
-      RouteTableId: !Ref private-route-table02
+      SubnetId: !Ref PrivateSubnet02
+      RouteTableId: !Ref PrivateRouteTable02
 
-  private-subnet03-route-table-association:
+  PrivateSubnet03-route-table-association:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref private-subnet03
-      RouteTableId: !Ref private-route-table03
+      SubnetId: !Ref PrivateSubnet03
+      RouteTableId: !Ref PrivateRouteTable03
 
-  tgw-subnet01-route-table-association:
+  TgwSubnet01-route-table-association:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref tgw-subnet01
-      RouteTableId: !Ref tgw-route-table01
+      SubnetId: !Ref TgwSubnet01
+      RouteTableId: !Ref TgwRouteTable01
 
-  tgw-subnet02-route-table-association:
+  TgwSubnet02-route-table-association:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref tgw-subnet02
-      RouteTableId: !Ref tgw-route-table02
+      SubnetId: !Ref TgwSubnet02
+      RouteTableId: !Ref TgwRouteTable02
 
-  tgw-subnet03-route-table-association:
+  TgwSubnet03-route-table-association:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref tgw-subnet03
-      RouteTableId: !Ref tgw-route-table03
+      SubnetId: !Ref TgwSubnet03
+      RouteTableId: !Ref TgwRouteTable03
 
   ControlPlaneSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -530,7 +530,7 @@ Outputs:
 
   SubnetIds:
     Description: Subnets IDs in the VPC
-    Value: !Join [ ",", [ !Ref public-subnet01, !Ref public-subnet02, !Ref public-subnet03,!Ref private-subnet01, !Ref private-subnet02, !Ref private-subnet03 ] ]
+    Value: !Join [ ",", [ !Ref PublicSubnet01, !Ref PublicSubnet02, !Ref PublicSubnet03,!Ref PrivateSubnet01, !Ref PrivateSubnet02, !Ref PrivateSubnet03 ] ]
 
   SecurityGroups:
     Description: Security group for the cluster control plane communication with worker nodes
