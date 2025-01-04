@@ -37,8 +37,8 @@ aws s3 ls s3://${PROJECT}/Code/
 ```
 
 ## Create the Stack which will create 
-#    * ECR repo
-#    * CodeCommit repo
+  * ECR repo
+ * CodeCommit repo
 ```
 STACK_NAME="${PROJECT}-codecommit-ecr"
 STACK_PARAMETERS=${STACK_NAME}.cfn
@@ -73,7 +73,7 @@ esac
 echo "]" >> ${STACK_PARAMETERS}
 ```
 
-# Validate the provided template 
+## Validate the provided template 
 ```
 aws cloudformation validate-template --template-body file://$(find . -name codecommit.yaml)                       
 aws cloudformation create-stack --stack-name "${STACK_NAME}" \
@@ -90,14 +90,15 @@ ECR_URL_BASE=$(echo $ECR_URL  | grep codedemo | cut -f1 -d\/  )
 aws codecommit list-repositories --query "repositories[].repositoryName" --output text
 ```
 
-#######
 ## Update aws-proserve-java-greeting code
+```
 sed -i -e "s/509501787486.dkr.ecr.us-east-2.amazonaws.com/$ECR_URL_BASE/g" $(find . -name values.dev.yaml)
+```
 
 
-#######
-## CFN Template to deploy CodePipeline to build Docker Image of java application 
-##    and push to ECR and deploy to EKS
+CFN Template to deploy CodePipeline to build Docker Image of java application 
+  and push to ECR and deploy to EKS
+```
 STACK_NAME="${PROJECT}-codepipeline"
 STACK_PARAMETERS=${STACK_NAME}.cfn
 STACK_PARAMETERS_TMP=${STACK_NAME}.cfn.tmp
@@ -143,8 +144,11 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
 
 aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ${REGION}
 aws cloudformation --region=${REGION} describe-stacks --query "Stacks[?StackName=='${PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text
+```
 
+```
 bash $(find . -name kube_aws_auth_configmap_patch.sh) $(aws cloudformation --region=${REGION} describe-stacks --query "Stacks[?StackName=='${PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text)
+```
 
 ## You now need to update a few things (updates in CodeCommit will trigger a new build)
 In CodeCommit Console, check out CodeCommit | Repositories | Code
@@ -167,9 +171,9 @@ project: parent: version: 2.0.9.RELEASE
 or...
 project: parent: version: 2.7.7.RELEASE
 
-####
-# Push AmazonCorretto image to your repo (This is still a WIP)
 
+Push AmazonCorretto image to your repo (This is still a WIP)
+``` 
 aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URL_BASE
 
 # registry/repository:tag
@@ -179,15 +183,20 @@ docker pull $IMAGE
 
 docker tag $IMAGE $ECR_URL:$IMAGE_TAG
 docker push $ECR_URL/$IMAGE_TAG
+``` 
 
 # The following... works (just an example)
-{ docker tag amazoncorretto:8-alpine $ECR_URL:latest
-docker push $ECR_URL:latest }
+``` 
+docker tag amazoncorretto:8-alpine $ECR_URL:latest
+docker push $ECR_URL:latest
+``` 
 
 
 ### RANDOM BITS
+``` 
 aws eks list-clusters --query "clusters[]" --output text --no-cli-pager
 aws codecommit list-repositories --query "repositories[].repositoryName" --output=text
+``` 
 
 aws cloudformation --region=us-east-1 describe-stacks --query "Stacks[?StackName=='codedemo-20231015-pipeline'].Outputs[0].OutputValue" --output text
 
