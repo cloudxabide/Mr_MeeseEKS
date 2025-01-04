@@ -1,17 +1,16 @@
 # Build the Builder Build
-# Status:  This just "notes" at this point (Jan 2023)
-#          I will improve the formatting so this is easier to follow
+Status:  This just "notes" at this point (Jan 2023)
+          I will improve the formatting so this is easier to follow
 
-I am using the following naming "standard"
-${APPNAME}-${MYDATE}-${MYVERSION}
-# codedemo-20230106-01
+I am using the following naming "standard"  
+${APPNAME}-${MYDATE}-${MYVERSION}  
+ex. codedemo-20230106-01  
 
-CodeCommit Repo
-CodePipeline 
-S3 Bucket
+CodeCommit Repo:  
+CodePipeline:  
+S3 Bucket:  
 
-#################################
-# Variables for this Demo
+## Variables for this Demo
 ```
 APPNAME="codedemo"  
 ENVIRONMENT="test"
