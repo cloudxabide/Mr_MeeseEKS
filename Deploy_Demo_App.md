@@ -47,5 +47,7 @@ curl -o replica_control.sh https://raw.githubusercontent.com/cloudxabide/Mr_Mees
 chmod +x replica_control.sh
 ./replica_control.sh up
 URL=$(kubectl get service/ecsdemo-frontend -n ecsdemo -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+echo "Note: I have seen this take upwards of 3 minutes to become available"
+echo -e "Browse to \nhttp://$URL"
 kubectl config set-context --current --namespace=default
 ```
