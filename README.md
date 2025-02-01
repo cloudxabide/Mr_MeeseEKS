@@ -37,7 +37,7 @@ Run through the [Install Tools](Install_Tools.md) doc
 https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
 
 ```
-MY_CLUSTER="demo"
+MY_CLUSTER="eksdemo"
 MY_REGION="us-east-1"
 MY_K8S_VERSION="1.31"
 STACK_NAME="${MY_CLUSTER}"
@@ -60,7 +60,7 @@ sdiff amazon-eks-vpc-private-subnets.yaml ${FILE}
 
 Tip:  If you want to swap CIDR
 ```
-sed -i -e 's/10.1./172.16./g' ${FILE}
+sed -i -e 's/10.1./172.17./g' ${FILE}
 ```
 
 ```
@@ -76,19 +76,29 @@ aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `
 ### OK.. now on to the cluster
 ```
 # Get the VPC_ID for the codedemo VPC we created
-MY_VPC_ID=$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=codedemo-VPC" --query "Vpcs[].VpcId" --output=text)
+MY_VPC_ID=$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=eksdemo-vpc" --query "Vpcs[].VpcId" --output=text)
 
 # Gather the SubnetId for the private subnets
 SUBNETS=$(aws ec2 describe-subnets --region $MY_REGION  --filters "Name=vpc-id,Values=${MY_VPC_ID}" --query 'Subnets[?MapPublicIpOnLaunch==`false`].SubnetId' --output=text)
+# aws ec2 describe-subnets --region $MY_REGION  --filters "Name=vpc-id,Values=${MY_VPC_ID}" "Name=map-public-ip-on-launch,Values=false" --query 'Subnets[?MapPublicIpOnLaunch==`false`].SubnetId' --output=text
+SUBNETS=$(aws ec2 describe-subnets --region $MY_REGION  --filters "Name=vpc-id,Values=${MY_VPC_ID}" "Name=map-public-ip-on-launch,Values=false" "Name=tag:Name,Values=*eksdemo-PrivateSubnet*" --query 'Subnets[?MapPublicIpOnLaunch==`false`].SubnetId' --output=text)
 ```
 
 The following command is not async - i.e. it will keep providing output until it is complete.  Enjoy!
 ```
+echo "SUBNETS: $SUBNETS"
+echo "MY_REGION: $MY_REGION"
+echo "MY_K8S_VERSION: $MY_K8S_VERSION"
 eksctl create cluster --name ${MY_CLUSTER} --region ${MY_REGION} --version ${MY_K8S_VERSION} --vpc-private-subnets $(echo $SUBNETS | sed 's/ /,/g') --without-nodegroup
 ```
 
 ```
 aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `eksctl-codedemo-cluster`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
+```
+## Update Logging
+```bash
+eksctl utils update-cluster-logging --enable-types={all)} --region=us-east-1 --cluster=eksdemo
+#    eksctl utils update-cluster-logging --enable-types api,audit --disable-types controllerManager,scheduler --cluster=<cluster-name>
 ```
 
 ## Create a Managed Node Group
