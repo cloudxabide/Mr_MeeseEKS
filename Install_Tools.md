@@ -25,11 +25,11 @@ aws --version
 
 Ouput: (2023-01-18)
 ```
-codedemo:~/environment $ aws --version
+eksdemo:~/environment $ aws --version
 aws-cli/1.19.112 Python/2.7.18 Linux/4.14.301-224.520.amzn2.x86_64 botocore/1.20.112
-codedemo:~/environment $ sudo ./aws/install 
+eksdemo:~/environment $ sudo ./aws/install 
 You can now run: /usr/local/bin/aws --version
-codedemo:~/environment $ aws --version
+eksdemo:~/environment $ aws --version
 aws-cli/2.9.15 Python/3.9.11 Linux/4.14.301-224.520.amzn2.x86_64 exe/x86_64.amzn.2 prompt/off
 ```
 

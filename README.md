@@ -70,12 +70,12 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
 ```
 
 ```
-aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `codedemo`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
+aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `eksdemo`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
 ```
 
 ### OK.. now on to the cluster
 ```
-# Get the VPC_ID for the codedemo VPC we created
+# Get the VPC_ID for the eksdemo VPC we created
 MY_VPC_ID=$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=eksdemo-vpc" --query "Vpcs[].VpcId" --output=text)
 
 # Gather the SubnetId for the private subnets
@@ -92,8 +92,9 @@ echo "MY_K8S_VERSION: $MY_K8S_VERSION"
 eksctl create cluster --name ${MY_CLUSTER} --region ${MY_REGION} --version ${MY_K8S_VERSION} --vpc-private-subnets $(echo $SUBNETS | sed 's/ /,/g') --without-nodegroup
 ```
 
+## Query for Stack tht creates cluster
 ```
-aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `eksctl-codedemo-cluster`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
+aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `eksctl-eksdemo`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
 ```
 ## Update Logging
 ```bash

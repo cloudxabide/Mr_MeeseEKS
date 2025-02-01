@@ -4,7 +4,7 @@ Status:  This just "notes" at this point (Jan 2023)
 
 I am using the following naming "standard"  
 ${APPNAME}-${MYDATE}-${MYVERSION}  
-ex. codedemo-20230106-01  
+ex. eksdemo-20230106-01  
 
 CodeCommit Repo:  
 CodePipeline:  
@@ -12,7 +12,7 @@ S3 Bucket:
 
 ## Variables for this Demo
 ```
-APPNAME="codedemo"  
+APPNAME="eksdemo"  
 ENVIRONMENT="test"
 MYDATE=$(date +%F)
 PROJECT="${APPNAME}-${MYDATE}"
@@ -80,11 +80,11 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
   --parameters file://${STACK_PARAMETERS} \
   --region $REGION
 
-# --query 'StackSummaries[?starts_with(StackName, `codedemo`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
+# --query 'StackSummaries[?starts_with(StackName, `eksdemo`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
 aws ecr describe-repositories --query
 #  Need to figure out how to pass a var in to the following command/query - $APPNAME, for example
-ECR_URL=$(aws ecr describe-repositories  --query 'repositories[?contains(repositoryUri,`codedemo`)].{repositoryUri:repositoryUri}' --output text --no-cli-pager )
-ECR_URL_BASE=$(echo $ECR_URL  | grep codedemo | cut -f1 -d\/  )
+ECR_URL=$(aws ecr describe-repositories  --query 'repositories[?contains(repositoryUri,`eksdemo`)].{repositoryUri:repositoryUri}' --output text --no-cli-pager )
+ECR_URL_BASE=$(echo $ECR_URL  | grep eksdemo | cut -f1 -d\/  )
 
 aws codecommit list-repositories --query "repositories[].repositoryName" --output text
 ```
@@ -104,7 +104,7 @@ STACK_PARAMETERS_TMP=${STACK_NAME}.cfn.tmp
 
 # Need to get this to query for the cluster name 
 #EKS_CLUSTER_NAME=$(aws eks list-clusters --query "clusters" --output text)
-EKS_CLUSTER_NAME=codedemo
+EKS_CLUSTER_NAME=eksdemo
 cat << EOF > ${STACK_PARAMETERS_TMP}
 EKSCodeBuildAppName	aws-proserve-java-greeting
 EcrDockerRepository	${PROJECT}
@@ -151,7 +151,7 @@ bash $(find . -name kube_aws_auth_configmap_patch.sh) $(aws cloudformation --reg
 
 ## You now need to update a few things (updates in CodeCommit will trigger a new build)
 In CodeCommit Console, check out CodeCommit | Repositories | Code
-codedemo/buildspec.yml
+eksdemo/buildspec.yml
 change/update
       - trivy --no-progress --exit-code 1 --severity HIGH,CRITICAL --auto-refresh $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
 to 
@@ -163,7 +163,7 @@ Then... approve (in CodePipeline)
 
 
 Also (I have no clue how the versioning works, or why it matters)
-codedemo/app/pom.xml
+eksdemo/app/pom.xml
 project: parent: version: 2.0.5.RELEASE
 to
 project: parent: version: 2.0.9.RELEASE
@@ -197,7 +197,7 @@ aws eks list-clusters --query "clusters[]" --output text --no-cli-pager
 aws codecommit list-repositories --query "repositories[].repositoryName" --output=text
 ``` 
 
-aws cloudformation --region=us-east-1 describe-stacks --query "Stacks[?StackName=='codedemo-20231015-pipeline'].Outputs[0].OutputValue" --output text
+aws cloudformation --region=us-east-1 describe-stacks --query "Stacks[?StackName=='eksdemo-20231015-pipeline'].Outputs[0].OutputValue" --output text
 
 
 ## Customize your code

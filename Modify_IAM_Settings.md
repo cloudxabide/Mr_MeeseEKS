@@ -18,7 +18,7 @@ aws configure set default.region ${AWS_REGION}
 aws configure get default.region
 
 
-aws sts get-caller-identity --query Arn | grep codedemo -q && echo "IAM role valid" || echo "IAM role NOT valid"
+aws sts get-caller-identity --query Arn | grep eksdemo -q && echo "IAM role valid" || echo "IAM role NOT valid"
 
 aws eks update-kubeconfig --region $MY_REGION--name $MY_CLUSTER
 
