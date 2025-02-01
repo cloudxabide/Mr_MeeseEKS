@@ -3,6 +3,8 @@
 (I'll add commenting later)
 
 ```
+kubectl create namespace ecsdemo
+kubectl config set-context --current --namespace=ecsdemo
 aws kms create-alias --alias-name alias/eksworkshop --target-key-id $(aws kms create-key --query KeyMetadata.Arn --output text)
 export MASTER_ARN=$(aws kms describe-key --key-id alias/eksworkshop --query KeyMetadata.Arn --output text)
 echo "export MASTER_ARN=${MASTER_ARN}" | tee -a ~/.bash_profile
@@ -14,28 +16,32 @@ eksctl create iamidentitymapping --cluster eksworkshop-eksctl --arn ${rolearn} -
 aws eks update-kubeconfig --name eksdemo
 kubectl describe configmap -n kube-system aws-auth
 
-cd ~/environment
 git clone https://github.com/aws-containers/ecsdemo-frontend.git
 git clone https://github.com/aws-containers/ecsdemo-nodejs.git
 git clone https://github.com/aws-containers/ecsdemo-crystal.git
 
-cd ~/environment/ecsdemo-nodejs
+cd ecsdemo-nodejs
 kubectl apply -f kubernetes/deployment.yaml
 kubectl apply -f kubernetes/service.yaml
 kubectl get deployment ecsdemo-nodejs
+cd -
 
-cd ~/environment/ecsdemo-crystal
+cd ecsdemo-crystal
 kubectl apply -f kubernetes/deployment.yaml
 kubectl apply -f kubernetes/service.yaml
 kubectl get deployment ecsdemo-crystal
 aws iam get-role --role-name "AWSServiceRoleForElasticLoadBalancing" || aws iam create-service-linked-role --aws-service-name "elasticloadbalancing.amazonaws.com"
+cd -
 
-cd ~/environment/ecsdemo-frontend
+cd ecsdemo-frontend
 kubectl apply -f kubernetes/deployment.yaml
 kubectl apply -f kubernetes/service.yaml
 kubectl get deployment ecsdemo-frontend
+cd -
 
 curl -o replica_control.sh https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Scripts/replica_control.sh
 chmod +x replica_control.sh
 ./replica_control.sh up
+URL=$(kubectl get service/ecsdemo-frontend -n ecsdemo -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+kubectl config set-context --current --namespace=default
 ```
