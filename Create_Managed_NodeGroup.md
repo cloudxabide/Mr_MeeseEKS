@@ -1,12 +1,10 @@
 # Create a Managed NodeGroup 
 
-
 ```
 MY_REGION=us-east-1
 [ -z $MY_CLUSTER ] && MY_CLUSTER=eksdemo
 aws ec2 create-key-pair --region $MY_REGION --key-name ${MY_CLUSTER} --query 'KeyMaterial' --output text > $MY_CLUSTER.pem
- aws ec2 describe-key-pairs --key-name ${MY_CLUSTER}
-
+aws ec2 describe-key-pairs --key-name ${MY_CLUSTER}
 ```
 
 ```
@@ -26,7 +24,6 @@ eksctl create nodegroup \
   --full-ecr-access \
   --managed \
   --node-private-networking
-
 ```
 
 ```
