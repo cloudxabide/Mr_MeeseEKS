@@ -32,7 +32,6 @@ Run through the [Install Tools](Install_Tools.md) doc
 [Modify IAM settings for your Workspace](./Modify_IAM_Settings.md)
 
 ## Create your EKS Cluster
-
 ### Slight diversion... create a VPC
 https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
 
@@ -98,7 +97,7 @@ aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `
 ```
 ## Update Logging
 ```bash
-eksctl utils update-cluster-logging --enable-types={all)} --region=us-east-1 --cluster=eksdemo
+eksctl utils update-cluster-logging --enable-types=all --region=$MY_REGION --cluster=$MY_CLUSTER --approve
 #    eksctl utils update-cluster-logging --enable-types api,audit --disable-types controllerManager,scheduler --cluster=<cluster-name>
 ```
 
@@ -117,8 +116,6 @@ This app is really cool.  It provides a "visual representation" of where the 3-t
 
 ## Deploy Java App using Code Pipeline
 This one is a bit more complicated/involved.  It will deploy all the resources necessary to deploy a simple Java WebApp using AWS Code Developer Tools
-
-
 
 ## References
 [Getting started with Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)  
