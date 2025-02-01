@@ -101,6 +101,12 @@ eksctl utils update-cluster-logging --enable-types=all --region=$MY_REGION --clu
 #    eksctl utils update-cluster-logging --enable-types api,audit --disable-types controllerManager,scheduler --cluster=<cluster-name>
 ```
 
+## Create local Kubeconfig
+```
+aws eks update-kubeconfig --region $MY_REGION --name $MY_CLUSTER --kubeconfig ~/.kube/${MY_CLUSTER}.kubeconfig
+export KUBECONFIG=~/.kube/eksdemo.kubeconfig
+```
+
 ## Create a Managed Node Group
 [Create a Managed Node Group](./Create_Managed_NodeGroup.md)
 
